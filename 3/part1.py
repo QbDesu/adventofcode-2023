@@ -1,7 +1,7 @@
 import re
-from sys import stdout
+import sys
 
-lines = open("./input.txt", "r").readlines()
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()
 
 symbol = re.compile(r"[^0-9.\n]")
 
@@ -26,7 +26,7 @@ result = 0
 def submit():
     global current_no, include, result
     if include:
-        stdout.write(current_no + " ")
+        sys.stdout.write(current_no + " ")
         result += int(current_no)
     current_no = ""
     include = False
@@ -38,7 +38,7 @@ for y, line in enumerate(lines):
             include = include or check_neighbours(x,y)
         else:
             submit()
-    stdout.write("\n")
+    sys.stdout.write("\n")
 
 submit()
 

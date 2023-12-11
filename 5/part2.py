@@ -1,4 +1,6 @@
-lines = open("./input.txt", "r").readlines()+["\n"]
+import sys
+
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()+["\n"]
 
 class Interval():
     def __init__(self, start, stop):
@@ -62,9 +64,9 @@ for line in lines[2:]:
         print(f"values\t\t({len(values)})")
         print(f"mappings\t({len(current_mappings)})")
         values = map_values(current_mappings, values)
+        current_mappings = []
         print(f"result\t\t({len(values)})")
         print(f"----------------------------------")
-        current_mappings = []
     elif ":" in line:
         continue
     else:

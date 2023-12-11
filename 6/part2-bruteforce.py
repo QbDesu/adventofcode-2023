@@ -1,4 +1,6 @@
-lines = open("./input.txt", "r").readlines()+["\n"]
+import sys
+
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()
 
 time = int(lines[0].split(":")[1].strip().replace(" ", ""))
 record = int(lines[1].split(":")[1].strip().replace(" ", ""))

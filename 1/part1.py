@@ -1,6 +1,7 @@
 import re
+import sys
 
-lines = open("./input.txt", "r").readlines()
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()
 
 number_regexp = re.compile(r"(\d)")
 

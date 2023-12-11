@@ -1,4 +1,6 @@
-lines = open("./input.txt", "r").readlines()
+import sys
+
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()
 
 cards = [1] * len(lines)
 

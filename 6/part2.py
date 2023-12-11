@@ -1,6 +1,7 @@
 from math import sqrt, floor, ceil
+import sys
 
-lines = open("./input.txt", "r").readlines()+["\n"]
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()
 
 time = int(lines[0].split(":")[1].strip().replace(" ", ""))
 record = int(lines[1].split(":")[1].strip().replace(" ", ""))

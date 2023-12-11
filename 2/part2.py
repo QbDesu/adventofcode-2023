@@ -1,7 +1,8 @@
 import re
 from math import prod
+import sys
 
-lines = open("./input.txt", "r").readlines()
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()
 
 colors = ["red", "green", "blue"]
 color_regex = {color: re.compile(r"(\d+) "+color) for color in colors}

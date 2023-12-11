@@ -1,7 +1,7 @@
-from sys import stdout
 from math import prod
+import sys
 
-lines = open("./input.txt", "r").readlines()
+lines = open(sys.argv[1] if len(sys.argv)>1 else "./input.txt", "r").readlines()
 
 gear = "*"
 
@@ -47,9 +47,9 @@ for y, line in enumerate(lines):
                 adjacent_nos.append(parse_no(x+1,y+1))
             
             if(len(adjacent_nos) == 2):
-                stdout.write(str(adjacent_nos) + " ")
+                sys.stdout.write(str(adjacent_nos) + " ")
                 result += prod(adjacent_nos)
         adjacent_nos = []
-    stdout.write("\n")
+    sys.stdout.write("\n")
 
 print(f"Result: {result}")

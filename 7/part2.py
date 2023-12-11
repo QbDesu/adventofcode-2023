@@ -13,10 +13,15 @@ HAND_TYPES = {
 }
 
 def hand_type(hand: str) -> int:
-    counts = (hand.count(card) for card in set(hand))
+    jokers = hand.count("J")
+    if jokers==5:
+        return HAND_TYPES["five of a kind"]
+    
+    counts = (hand.count(card) for card in set(hand.replace("J", "")))
     triples = 0
     pairs = 0
     for count in sorted(counts, reverse=True):
+        count += jokers
         match count:
             case 5:
                 return HAND_TYPES["five of a kind"]
@@ -28,6 +33,7 @@ def hand_type(hand: str) -> int:
                 if triples == 1:
                     return HAND_TYPES["full house"]
                 pairs += 1
+        jokers = 0
     if triples == 1:
         return HAND_TYPES["three of a kind"]
     elif pairs == 2:
@@ -36,10 +42,15 @@ def hand_type(hand: str) -> int:
         return HAND_TYPES["one pair"]
     else:
         return HAND_TYPES["high card"]
+    
+
 
 hands = [line.split() for line in lines]
 hands = [(hand_type(hand), hand, int(bid)) for hand, bid in hands]
-hands.sort(key=lambda x: (x[0], x[1].replace("A", "Z").replace("K", "Y").replace("Q", "X").replace("J", "W"), x[2]))
+hands.sort(key=lambda x: (x[0], x[1].replace("A", "Z").replace("K", "Y").replace("Q", "X").replace("J", "0"), x[2]))
+
+for hand in hands:
+    print(f"{hand[0]}: {hand[1]}")
 
 result = sum((idx+1)*hand[2] for idx, hand in enumerate(hands))
 print(result)
