@@ -17,19 +17,22 @@ for y, line in enumerate(lines):
             filled_columns.add(x)
             galaxies.append(pos)
 
-def distance(pos1, pos2):
+def distance(pos1, pos2, expansion):
     distance = 0
     for x in range(min(pos1[0], pos2[0]), max(pos1[0], pos2[0])):
         if x in filled_columns:
             distance += 1
         else:
-            distance += 2
+            distance += expansion
     for y in range(min(pos1[1], pos2[1]), max(pos1[1], pos2[1])):
         if y in filled_rows:
             distance += 1
         else:
-            distance += 2
+            distance += expansion
     return distance
 
+def main(expansion):
+    print(sum(distance(*combination, expansion) for combination in combinations(galaxies, 2)))
 
-print(sum(distance(*combination) for combination in combinations(galaxies, 2)))
+if __name__ == "__main__":
+    main(expansion=2)

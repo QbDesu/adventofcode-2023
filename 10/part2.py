@@ -10,6 +10,7 @@ def find_start():
             if char == "S":
                 return (x, y)
 
+
 direction_vectors = {
     "N": (0, -1),
     "E": (1, 0),
@@ -32,84 +33,50 @@ def set_tile(pos, value):
     lines[y] = line[:x] + value + line[x+1:]
 
 
-def is_valid_direction(pos, direction):
-    tile = get_tile(pos)
-    match tile:
-        case "|":
-            if direction in ("N", "S"):
-                return True
-            else:
-                return False
-        case "-":
-            if direction in ("E", "W"):
-                return True
-            else:
-                return False
-        case "L":
-            if direction in ("S", "W"):
-                return True
-            else:
-                return False
-        case "J":
-            if direction in ("S", "E"):
-                return True
-            else:
-                return False
-        case "F":
-            if direction in ("N", "W"):
-                return True
-            else:
-                return False
-        case "7":
-            if direction in ("N", "E"):
-                return True
-            else:
-                return False
-    return False
-
-
 def get_new_direction(pos, direction):
     tile = get_tile(pos)
     match tile:
         case "|":
-            return direction
+            if direction in ("N", "S"):
+                return direction
         case "-":
-            return direction
+            if direction in ("E", "W"):
+                return direction
         case "L":
-            return "E" if direction == "S" else "N"
+            if direction in ("S", "W"):
+                return "E" if direction == "S" else "N"
         case "J":
-            return "W" if direction == "S" else "N"
+            if direction in ("S", "E"):
+                return "W" if direction == "S" else "N"
         case "F":
-            return "E" if direction == "N" else "S"
+            if direction in ("N", "W"):
+                return "E" if direction == "N" else "S"
         case "7":
-            return "W" if direction == "N" else "S"
-    return None
+            if direction in ("N", "E"):
+                return "W" if direction == "N" else "S"
 
-def invert_direction(direction):
-    if direction == "N":
-        return "S"
-    elif direction == "E":
-        return "W"
-    elif direction == "S":
-        return "N"
-    elif direction == "W":
-        return "E"
 
-def get_tile_from_directions(a, b):
+invert_direction = {
+    "N": "S",
+    "E": "W",
+    "S": "N",
+    "W": "E"
+}
+
+tile_from_directions_map = {
+    ("E", "N"): "L",
+    ("E", "S"): "F",
+    ("E", "W"): "-",
+    ("N", "S"): "|",
+    ("N", "W"): "J",
+    ("S", "W"): "7",
+}
+
+
+def tile_from_directions(a, b):
     tupled = tuple(sorted((a, b)))
-    match tupled:
-        case ("E", "N"):
-            return "L"
-        case ("E", "S"):
-            return "F"
-        case ("E", "W"):
-            return "-"
-        case ("N", "S"):
-            return "|"
-        case ("N", "W"):
-            return "J"
-        case ("S", "W"):
-            return "7"
+    return tile_from_directions_map[tupled]
+
 
 def get_loop():
     starting_position = find_start()
@@ -128,18 +95,18 @@ def get_loop():
             tile = get_tile(position)
             if tile == "S":
                 print(f"Found loop going {starting_direction}!")
-                set_tile(position, get_tile_from_directions(starting_direction, invert_direction(direction)))
+                set_tile(position, tile_from_directions(
+                    starting_direction, invert_direction[direction]))
                 return loop
             if tile == ".":
                 print(f"Found break going {starting_direction}!")
                 break
             else:
-                if not is_valid_direction(position, direction):
+                direction = get_new_direction(position, direction)
+                if not direction:
                     print(
                         f"Found invalid direction going {starting_direction}!")
                     break
-                direction = get_new_direction(position, direction)
-
 
 
 matching_segments = {
@@ -167,5 +134,5 @@ for y, line in enumerate(lines):
                         inside_loop = not inside_loop
                     loop_segment = None
         elif inside_loop:
-            contained_tiles += 1)
+            contained_tiles += 1
 print(f"Contained tiles: {contained_tiles}")

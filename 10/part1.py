@@ -97,5 +97,3 @@ for starting_direction in directions:
                 print(f"Found invalid direction going {starting_direction}!")
                 break
             direction = get_new_direction(position, direction)
-
-    
